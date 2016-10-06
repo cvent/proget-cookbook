@@ -1,0 +1,26 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+  format: documentation
+
+platforms:
+  - name: windows-2012R2
+    driver:
+      box: opentable/win-2012r2-standard-amd64-nocm
+    transport:
+      name: winrm
+      elevated: true
+
+suites:
+  - name: iis
+    run_list:
+      - recipe[proget-test::server_iis]
+  - name: standalone
+    run_list:
+      - recipe[proget-test::server_standalone]

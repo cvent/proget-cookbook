@@ -1,0 +1,15 @@
+DEPENDENCIES
+  proget
+    path: .
+    metadata: true
+  proget-test
+    path: test/cookbooks/proget-test
+
+GRAPH
+  iis (5.0.1)
+    windows (>= 1.34.6)
+  proget (0.1.0)
+    iis (>= 0.0.0)
+  proget-test (0.1.0)
+    proget (>= 0.0.0)
+  windows (2.0.2)
