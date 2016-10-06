@@ -4,6 +4,6 @@ proget_server 'proget' do
   email_address 'jmorley@cvent.com'
   full_name 'JonathanMorley'
   version '4.4.1'
-  pacakge_version '4.4.1.30'
+  package_version '4.4.1.30'
   iis true
 end
