@@ -5,5 +5,11 @@ proget_server 'proget' do
   full_name 'Example'
   version '4.4.1'
   package_version '4.4.1.30'
-  iis true
+end
+
+# TODO: Check for ProGet to be up
+ruby_block 'wait for ProGet' do
+  block do
+    sleep 10
+  end
 end

@@ -1,11 +1,10 @@
 proget_server 'proget' do
   action :install
   edition :express
-  email_address 'jmorley@cvent.com'
-  full_name 'JonathanMorley'
-  version '4.4.1'
-  package_version '4.4.1.30'
-  iis false
+  email_address 'example@example.com'
+  full_name 'Example'
+  version '4.4.2'
+  package_version '4.4.2.5'
 end
 
 # TODO: Check for ProGet to be up

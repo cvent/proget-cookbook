@@ -17,7 +17,7 @@ before_build:
   - copy .kitchen.appveyor.yml .kitchen.local.yml
 
 build_script:
-  - chef exec kitchen converge
+  - chef exec kitchen converge default
 
 test_script:
   - chef exec inspec exec test/integration/**/*.rb
