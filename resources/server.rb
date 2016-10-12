@@ -13,6 +13,8 @@ property :target_path, String
 property :packages_path, String
 property :log_file, String
 
+default_action :install
+
 # Details on these flags, their meanings and defaults can be found at
 # http://inedo.com/support/documentation/proget/installation/silent-installation
 
