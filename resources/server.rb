@@ -34,6 +34,9 @@ property :database_backup_path
 
 default_action :install
 
+# Details on these flags, their meanings and defaults can be found at
+# http://inedo.com/support/documentation/proget/installation/silent-installation
+
 action :install do
   case edition
   when :express, :trial
