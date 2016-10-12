@@ -4,12 +4,6 @@
 #   its('version') { should eq '4.4.1.30' }
 # end
 
-describe iis_site('ProGet') do
-  it { should exist }
-  it { should be_running }
-  it { should have_app_pool('ProGetAppPool') }
-end
-
 describe port(80) do
   it { should be_listening }
 end

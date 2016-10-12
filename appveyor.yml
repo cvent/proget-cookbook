@@ -16,8 +16,15 @@ before_build:
   - chef exec bundle install --with="appveyor"
   - copy .kitchen.appveyor.yml .kitchen.local.yml
 
+# Just test default as multiple tests would require cleanup of the local VM
 build_script:
-  - chef exec kitchen converge
+  - chef exec kitchen converge default
 
 test_script:
-  - chef exec inspec exec test/integration/**/*.rb
+  - chef exec inspec exec test/integration/default/*.rb
+
+#build_script:
+#  - chef exec kitchen converge
+#
+#test_script:
+#  - chef exec inspec exec test/integration/**/*.rb

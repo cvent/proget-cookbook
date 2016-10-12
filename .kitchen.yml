@@ -18,9 +18,13 @@ platforms:
       elevated: true
 
 suites:
+  - name: default
+    run_list:
+      - recipe[proget-test::server_default]
   - name: iis
     run_list:
       - recipe[proget-test::server_iis]
-  - name: standalone
+  - name: upgrade
     run_list:
-      - recipe[proget-test::server_standalone]
+      - recipe[proget-test::server_default]
+      - recipe[proget-test::server_442]
