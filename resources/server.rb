@@ -32,6 +32,7 @@ property :iis, [true, false], default: false
 property :backup_database, [true, false]
 property :database_backup_path
 
+default_action :install
 
 action :install do
   case edition
@@ -43,46 +44,46 @@ action :install do
   end
 
   installer_args = case current_version
-  when nil
-    installer_args = ['/S', "/Edition=#{camel_case(edition)}"]
+                   when nil
+                     installer_args = ['/S', "/Edition=#{camel_case(edition)}"]
 
-    installer_args += [
-      :email_address,
-      :full_name,
-      :license_key,
-      :target_path,
-      :packages_path,
-      :aspnet_temp_path,
-      :web_app_path,
-      :service_path,
-      :extensions,
-      :connection_string,
-      :port,
-      :web_server_prefixes,
-      :user_account,
-      :password,
-      :web_app_user_account,
-      :web_app_user_account_password,
-      :service_user_account,
-      :service_user_account_password,
-      :log_file
-    ].reject { |prop| new_resource.send(prop).nil? }
-     .map { |prop| "/#{camel_case(prop)}=#{new_resource.send(prop)}" }
+                     installer_args += [
+                       :email_address,
+                       :full_name,
+                       :license_key,
+                       :target_path,
+                       :packages_path,
+                       :aspnet_temp_path,
+                       :web_app_path,
+                       :service_path,
+                       :extensions,
+                       :connection_string,
+                       :port,
+                       :web_server_prefixes,
+                       :user_account,
+                       :password,
+                       :web_app_user_account,
+                       :web_app_user_account_password,
+                       :service_user_account,
+                       :service_user_account_password,
+                       :log_file
+                     ].reject { |prop| new_resource.send(prop).nil? }
+                                       .map { |prop| "/#{camel_case(prop)}=#{new_resource.send(prop)}" }
 
-    installer_args << '/InstallSqlExpress' unless connection_string
-    installer_args << "/UseIntegratedWebServer=#{!iis}"
-    installer_args << "/ConfigureIIS=#{iis}"
-  when ->(v) { v < Gem::Version.new(package_version) }
-    installer_args = ['/S', '/Upgrade']
+                     installer_args << '/InstallSqlExpress' unless connection_string
+                     installer_args << "/UseIntegratedWebServer=#{!iis}"
+                     installer_args << "/ConfigureIIS=#{iis}"
+                   when ->(v) { v < Gem::Version.new(package_version) }
+                     installer_args = ['/S', '/Upgrade']
 
-    installer_args += [
-      :connection_string,
-      :log_file
-    ].reject { |prop| new_resource.send(prop).nil? }
-     .map { |prop| "/#{camel_case(prop)}=#{new_resource.send(prop)}" }
-  else
-    return
-  end
+                     installer_args += [
+                       :connection_string,
+                       :log_file
+                     ].reject { |prop| new_resource.send(prop).nil? }
+                                       .map { |prop| "/#{camel_case(prop)}=#{new_resource.send(prop)}" }
+                   else
+                     return
+                   end
 
   if iis
     include_recipe 'iis'
@@ -104,7 +105,7 @@ action :install do
     checksum new_resource.checksum if new_resource.checksum
   end
 
-  package 'ProGet' do
+  package 'ProGet' do # ~FC009
     action :install
     source proget_installer
     version new_resource.version
@@ -115,7 +116,7 @@ end
 
 def current_version
   reg_entries = Chef::Provider::Package::Windows::RegistryUninstallEntry.find_entries('ProGet')
-  return case reg_entries.length
+  case reg_entries.length
   when 0 then nil
   when 1 then Gem::Version.new(reg_entries[0].display_version)
   else raise 'Too many ProGet installs detected'
