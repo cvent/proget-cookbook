@@ -15,5 +15,5 @@ describe port(80) do
 end
 
 describe command("(curl 'http://localhost:80' -UseBasicParsing).Content") do
-  its('stdout') { should match (/<title>ProGet Home<\/title>/) }
+  its('stdout') { should match %r{<title>ProGet Home</title>} }
 end

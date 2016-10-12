@@ -71,7 +71,7 @@ action :install do
                        :service_user_account_password,
                        :log_file
                      ].reject { |prop| new_resource.send(prop).nil? }
-                                       .map { |prop| "/#{camel_case(prop)}=#{new_resource.send(prop)}" }
+                      .map { |prop| "/#{camel_case(prop)}=#{new_resource.send(prop)}" }
 
                      installer_args << '/InstallSqlExpress' unless connection_string
                      installer_args << "/UseIntegratedWebServer=#{!iis}"
@@ -83,7 +83,7 @@ action :install do
                        :connection_string,
                        :log_file
                      ].reject { |prop| new_resource.send(prop).nil? }
-                                       .map { |prop| "/#{camel_case(prop)}=#{new_resource.send(prop)}" }
+                      .map { |prop| "/#{camel_case(prop)}=#{new_resource.send(prop)}" }
                    else
                      return
                    end
@@ -101,7 +101,8 @@ action :install do
   end
 
   package_cache_dir = Chef::FileCache.create_cache_path('package')
-  proget_installer = ::File.join(package_cache_dir, "proget-#{new_resource.version}.exe")
+  proget_installer = ::File.join(package_cache_dir,
+                                 "proget-#{new_resource.version}.exe")
 
   remote_file proget_installer do
     source proget_url(connection_string, new_resource.version)
