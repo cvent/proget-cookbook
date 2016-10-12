@@ -96,7 +96,7 @@ GEM
     highline (1.7.8)
     httpclient (2.8.2.4)
     iniparse (1.4.2)
-    inspec (1.1.0)
+    inspec (1.2.0)
       hashie (~> 3.4)
       json (>= 1.8, < 3.0)
       method_source (~> 0.8)
@@ -137,10 +137,11 @@ GEM
       mixlib-log
     mixlib-cli (1.7.0)
     mixlib-config (2.2.4)
-    mixlib-install (2.1.0)
+    mixlib-install (2.1.1)
       artifactory
       mixlib-shellout
       mixlib-versioning
+      thor
     mixlib-log (1.7.1)
     mixlib-shellout (2.2.7)
     mixlib-versioning (1.1.0)
@@ -223,14 +224,14 @@ GEM
     rubyzip (1.2.0)
     rufus-lru (1.1.0)
     safe_yaml (1.0.4)
-    serverspec (2.36.1)
+    serverspec (2.37.1)
       multi_json
       rspec (~> 3.0)
       rspec-its
       specinfra (~> 2.53)
     sfl (2.3)
     slop (3.6.0)
-    specinfra (2.63.2)
+    specinfra (2.63.3)
       net-scp
       net-ssh (>= 2.7, < 4.0)
       net-telnet
@@ -263,7 +264,7 @@ GEM
       polyglot (~> 0.3)
     unicode-display_width (1.1.1)
     uuidtools (2.1.5)
-    winrm (2.0.3)
+    winrm (2.1.0)
       builder (>= 2.1.2)
       erubis (~> 2.7)
       gssapi (~> 1.2)
