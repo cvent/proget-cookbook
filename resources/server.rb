@@ -71,7 +71,7 @@ action :install do
                        :service_user_account_password,
                        :log_file
                      ].reject { |prop| new_resource.send(prop).nil? }
-                      .map { |prop| "/#{camel_case(prop)}=#{new_resource.send(prop)}" }
+                      .map { |prop| "/#{camel_case(prop)}=\"#{new_resource.send(prop)}\"" }
 
                      installer_args << '/InstallSqlExpress' unless connection_string
                      installer_args << "/UseIntegratedWebServer=#{!iis}"
@@ -83,7 +83,7 @@ action :install do
                        :connection_string,
                        :log_file
                      ].reject { |prop| new_resource.send(prop).nil? }
-                      .map { |prop| "/#{camel_case(prop)}=#{new_resource.send(prop)}" }
+                      .map { |prop| "/#{camel_case(prop)}=\"#{new_resource.send(prop)}\"" }
                    else
                      return
                    end
@@ -132,5 +132,5 @@ def camel_case(str)
 end
 
 def proget_url(external_sql, version)
-  "http://inedo.com/proget/download/#{external_sql ? 'nosql' : 'sql'}/#{version}"
+  "https://inedo.com/proget/download/#{external_sql ? 'nosql' : 'sql'}/#{version}"
 end
