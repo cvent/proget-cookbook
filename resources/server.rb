@@ -132,5 +132,5 @@ def camel_case(str)
 end
 
 def proget_url(external_sql, version)
-  "http://inedo.com/proget/download/#{external_sql ? 'nosql' : 'sql'}/#{version}"
+  "https://inedo.com/proget/download/#{external_sql ? 'nosql' : 'sql'}/#{version}"
 end
