@@ -1,8 +1,9 @@
-# For some reason the code below doesn't work on appveyor
-# describe package('ProGet') do
-#   it { should be_installed }
-#   its('version') { should eq '4.4.1.30' }
-# end
+# frozen_string_literal: true
+
+describe package('ProGet') do
+  it { should be_installed }
+  its('version') { should eq '4.4.1.30' }
+end
 
 describe iis_site('ProGet') do
   it { should exist }

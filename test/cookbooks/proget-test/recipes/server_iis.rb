@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 proget_server 'proget' do
   action :install
   edition :express

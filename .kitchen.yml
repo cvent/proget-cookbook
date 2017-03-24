@@ -30,9 +30,9 @@ suites:
   - name: iis
     run_list:
       - recipe[proget-test::server_iis]
-  - name: sqlserver
+  - name: sql_server
     run_list:
-      - recipe[proget-test::server_sqlserver]
+      - recipe[proget-test::server_sql_server]
   - name: upgrade
     run_list:
       - recipe[proget-test::server_default]

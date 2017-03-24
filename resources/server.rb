@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 property :name, String, name_property: true
 property :version, String, required: true
 property :checksum, String
@@ -16,10 +18,12 @@ property :web_app_path, String
 property :service_path, String
 property :extensions, String
 property :connection_string, String
-property :port, Fixnum
+property :port, Integer, default: 81
 property :use_integrated_web_server, [true, false], default: true
 property :web_server_prefixes, String
-property :install_sql_express, [true, false], default: false
+# We default to true here so that the defaults will install a
+# self-contained ProGet instance
+property :install_sql_express, [true, false], default: true
 property :user_account, String
 property :password, String
 property :web_app_user_account, String
@@ -30,13 +34,11 @@ property :log_file, String
 property :configure_iis, [true, false], default: lazy { !use_integrated_web_server }
 
 property :iis, [true, false], default: lazy { !use_integrated_web_server }
-property :sqlserver, [true, false], default: lazy { !install_sql_express }
 
 property :backup_database, [true, false]
-property :database_backup_path
+property :database_backup_path, String
 
 include ProgetCookbook::HelpersBase
-include Windows::Helper
 
 default_action :install
 
@@ -44,13 +46,16 @@ action :install do
   validate_props(new_resource)
 
   action_iis if new_resource.iis
-  action_sqlserver if new_resource.sqlserver
+
+  args = case current_version
+         when nil
+           install_args(new_resource)
+         when ->(v) { Gem::Version.new(v) < Gem::Version.new(new_resource.version) }
+           upgrade_args(new_resource)
+         end
 
   package_cache_dir = Chef::FileCache.create_cache_path('package')
   package_version = package_version(new_resource.version)
-  installed_version = installed_packages.fetch('ProGet', {})['version']
-  p installed_version
-  p install_args(new_resource).join(' ')
   package 'ProGet' do # ~FC009
     action :install
     source proget_url(connection_string, package_version)
@@ -58,15 +63,40 @@ action :install do
     remote_file_attributes name: ::File.join(package_cache_dir, "proget-#{package_version}.exe")
     version new_resource.version
     installer_type :custom
-    options install_args(new_resource).join(' ')
-    notifies :run, 'ruby_block[raise for failure]', :immediately
+    options args.join(' ')
+    notifies :run, "ruby_block[#{new_resource.name} install failure]", :immediately
+    notifies :run, "ruby_block[wait for #{new_resource.name}]", :immediately
+  end if args
+
+  ruby_block "#{new_resource.name} install failure" do
+    action :nothing
+    block { raise 'Installation of Proget failed' }
+    not_if { current_version == new_resource.version }
   end
 
-  ruby_block 'raise for failure' do
+  ruby_block "wait for #{new_resource.name}" do
+    action :nothing
     block do
-      raise 'Installation of Proget failed'
+      require 'net/http'
+      test_server = lambda do
+        begin
+          Net::HTTP.get_response('localhost', '/', new_resource.port).is_a?(Net::HTTPSuccess)
+        rescue
+          false
+        end
+      end
+
+      until test_server.call
+        Chef::Log.info "Waiting for #{new_resource.name} to be up"
+        sleep 2
+      end
     end
-    not_if { installed_packages.fetch('ProGet', {})['version'] }
+  end
+end
+
+action :remove do
+  package 'ProGet' do # ~FC009
+    action :remove
   end
 end
 
@@ -79,9 +109,6 @@ action :iis do
     action :unlock
     section 'system.webServer/handlers'
   end
-end
-
-action :sqlserver do
 end
 
 def validate_props(resource)

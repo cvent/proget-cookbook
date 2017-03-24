@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 name 'proget'
 maintainer 'Morley, Jonathan'
 maintainer_email 'JMorley@cvent.com'
@@ -11,3 +12,4 @@ version '0.1.0'
 supports 'windows'
 
 depends 'iis'
+depends 'windows'
