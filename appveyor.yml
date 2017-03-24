@@ -21,6 +21,7 @@ build_script:
   - chef exec kitchen converge default
 
 test_script:
+  - ps: ls HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*
   - chef exec inspec exec test/integration/default/*.rb
 
 #build_script:
