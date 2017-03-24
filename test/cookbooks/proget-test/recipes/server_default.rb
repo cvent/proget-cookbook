@@ -3,8 +3,7 @@ proget_server 'proget' do
   edition :express
   email_address 'example@example.com'
   full_name 'Example'
-  version '4.4.1'
-  package_version '4.4.1.30'
+  version '4.4.1.30'
 end
 
 # TODO: Check for ProGet to be up
