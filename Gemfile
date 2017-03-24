@@ -2,16 +2,16 @@
 source 'https://rubygems.org'
 
 group :development do
-  gem 'stove'
   gem 'chef'
+  gem 'stove'
   gem 'github_changelog_generator'
-  gem 'rake'
-  gem 'foodcritic'
   gem 'cookstyle'
-  gem 'kitchen-vagrant'
+  gem 'foodcritic'
+  gem 'rake'
   gem 'kitchen-inspec'
-  gem 'rspec'
+  gem 'kitchen-vagrant'
   gem 'berkshelf'
+  gem 'rspec'
   gem 'winrm-elevated'
 end
 
