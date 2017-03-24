@@ -2,6 +2,7 @@
 
 property :name, String, name_property: true
 property :version, String, required: true
+property :package_version, String, default: lazy { strip_patch_version(version) }
 property :checksum, String
 
 # Details on these flags, their meanings and defaults can be found at
@@ -55,10 +56,9 @@ action :install do
          end
 
   package_cache_dir = Chef::FileCache.create_cache_path('package')
-  package_version = package_version(new_resource.version)
   package 'ProGet' do # ~FC009
     action :install
-    source proget_url(connection_string, package_version)
+    source proget_url(install_sql_express, package_version)
     checksum new_resource.checksum if new_resource.checksum
     remote_file_attributes name: ::File.join(package_cache_dir, "proget-#{package_version}.exe")
     version new_resource.version
@@ -78,6 +78,7 @@ action :install do
     action :nothing
     block do
       require 'net/http'
+
       test_server = lambda do
         begin
           Net::HTTP.get_response('localhost', '/', new_resource.port).is_a?(Net::HTTPSuccess)

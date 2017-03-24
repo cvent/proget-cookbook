@@ -7,7 +7,7 @@ module ProgetCookbook
       installed_packages.fetch('ProGet', {})[:version]
     end
 
-    def package_version(version)
+    def strip_patch_version(version)
       version.split('.')[0...-1].join('.')
     end
 
@@ -23,7 +23,7 @@ module ProgetCookbook
     end
 
     def proget_url(sql, version)
-      "https://inedo.com/proget/download/#{sql ? 'nosql' : 'sql'}/#{version}"
+      "https://inedo.com/proget/download/#{sql ? 'sql' : 'nosql'}/#{version}"
     end
 
     def install_args(resource)
