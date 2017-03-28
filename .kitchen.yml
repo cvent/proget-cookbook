@@ -1,6 +1,7 @@
 ---
 driver:
   name: vagrant
+  gui: false
 
 provisioner:
   name: chef_zero
@@ -9,13 +10,18 @@ verifier:
   name: inspec
   format: documentation
 
+transport:
+  name: winrm
+  elevated: true
+
 platforms:
-  - name: windows-2012R2
+  - name: windows-2012r2
     driver:
+      # mwrock/Windows2012R2 has issues related to # https://github.com/chef-cookbooks/iis/issues/280
       box: opentable/win-2012r2-standard-amd64-nocm
-    transport:
-      name: winrm
-      elevated: true
+  - name: windows-2016
+    driver:
+      box: mwrock/Windows2016
 
 suites:
   - name: default
@@ -24,6 +30,9 @@ suites:
   - name: iis
     run_list:
       - recipe[proget-test::server_iis]
+  - name: sql_server
+    run_list:
+      - recipe[proget-test::server_sql_server]
   - name: upgrade
     run_list:
       - recipe[proget-test::server_default]
