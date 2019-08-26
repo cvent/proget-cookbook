@@ -58,9 +58,9 @@ action :install do
   package_cache_dir = Chef::FileCache.create_cache_path('package')
   package 'ProGet' do # ~FC009
     action :install
-    source proget_url(install_sql_express, package_version)
+    source proget_url(new_resource.install_sql_express, new_resource.package_version)
     checksum new_resource.checksum if new_resource.checksum
-    remote_file_attributes name: ::File.join(package_cache_dir, "proget-#{package_version}.exe")
+    remote_file_attributes name: ::File.join(package_cache_dir, "proget-#{new_resource.package_version}.exe")
     version new_resource.version
     installer_type :custom
     options args.join(' ')
