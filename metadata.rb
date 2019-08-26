@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: true ~FC066 ~FC069 ~FC078
 name 'proget'
 maintainer 'Morley, Jonathan'
 maintainer_email 'JMorley@cvent.com'

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-property :name, String, name_property: true
+property :name, String, name_property: true # ~FC108
 property :version, String, required: true
 property :package_version, String, default: lazy { strip_patch_version(version) }
 property :checksum, String
