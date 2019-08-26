@@ -1,4 +1,4 @@
-# frozen_string_literal: true ~FC066 ~FC069 ~FC078
+# frozen_string_literal: true ~FC078
 name 'proget'
 maintainer 'Morley, Jonathan'
 maintainer_email 'JMorley@cvent.com'
@@ -13,3 +13,6 @@ supports 'windows'
 
 depends 'iis'
 depends 'windows'
+
+chef_version '>= 12.6.0' if respond_to?(:chef_version)
+license 'All Rights Reserved'
