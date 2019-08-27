@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-property :name, String, name_property: true
+property :resource_name, String, name_property: true
 property :version, String, required: true
 property :package_version, String, default: lazy { strip_patch_version(version) }
 property :checksum, String
@@ -58,23 +58,23 @@ action :install do
   package_cache_dir = Chef::FileCache.create_cache_path('package')
   package 'ProGet' do # ~FC009
     action :install
-    source proget_url(install_sql_express, package_version)
+    source proget_url(new_resource.install_sql_express, new_resource.package_version)
     checksum new_resource.checksum if new_resource.checksum
-    remote_file_attributes name: ::File.join(package_cache_dir, "proget-#{package_version}.exe")
+    remote_file_attributes name: ::File.join(package_cache_dir, "proget-#{new_resource.package_version}.exe")
     version new_resource.version
     installer_type :custom
     options args.join(' ')
-    notifies :run, "ruby_block[#{new_resource.name} install failure]", :immediately
-    notifies :run, "ruby_block[wait for #{new_resource.name}]", :immediately
+    notifies :run, "ruby_block[#{new_resource.resource_name} install failure]", :immediately
+    notifies :run, "ruby_block[wait for #{new_resource.resource_name}]", :immediately
   end if args
 
-  ruby_block "#{new_resource.name} install failure" do
+  ruby_block "#{new_resource.resource_name} install failure" do
     action :nothing
     block { raise 'Installation of Proget failed' }
     not_if { current_version == new_resource.version }
   end
 
-  ruby_block "wait for #{new_resource.name}" do
+  ruby_block "wait for #{new_resource.resource_name}" do
     action :nothing
     block do
       require 'net/http'
@@ -88,7 +88,7 @@ action :install do
       end
 
       until test_server.call
-        Chef::Log.info "Waiting for #{new_resource.name} to be up"
+        Chef::Log.info "Waiting for #{new_resource.resource_name} to be up"
         sleep 2
       end
     end

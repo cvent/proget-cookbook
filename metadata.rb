@@ -7,9 +7,12 @@ description 'Handles installing ProGet Server'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 source_url 'https://github.com/cvent/proget-cookbook'
 issues_url 'https://github.com/cvent/proget-cookbook/issues'
-version '0.2.0'
+version '0.2.1'
 
 supports 'windows'
 
 depends 'iis'
 depends 'windows'
+
+chef_version '>= 12.6.0' if respond_to?(:chef_version)
+license 'Apache-2.0'
