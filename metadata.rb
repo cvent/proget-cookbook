@@ -15,4 +15,4 @@ depends 'iis'
 depends 'windows'
 
 chef_version '>= 12.6.0' if respond_to?(:chef_version)
-license LICENSE
+license 'Apache-2.0'
